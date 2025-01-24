@@ -6,6 +6,7 @@ import io.org.reactivestax.service.MessageService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +23,8 @@ public class MessageController {
     private MessageService messageService;
 
     @PostMapping("/sms")
-    public MessageDTO sendToJMSWithSMSMethod(@Valid @RequestBody MessageDTO messageDTO){
-        return messageService.sendMessageToJMS(messageDTO, SMS);
+    public ResponseEntity<MessageDTO> sendToJMSWithSMSMethod(@Valid @RequestBody MessageDTO messageDTO){
+        return ResponseEntity.ok(messageService.sendMessageToJMS(messageDTO, SMS));
     }
     @PostMapping("/call")
     public MessageDTO sendToJMSWithCallMethod(@Valid @RequestBody MessageDTO messageDTO){

@@ -7,7 +7,7 @@ import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,28 +22,28 @@ public class OTPController {
 
 
     @PostMapping("/sms")
-    public String generateOtpForSms(@Valid @RequestBody OtpDTO otpDTO){
+    public ResponseEntity<String> generateOtpForSms(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.SMS);
-        return  otpService.handleOtpRequest(otpDTO,"sms");
+        return ResponseEntity.ok(otpService.handleOtpRequest(otpDTO, "sms"));
     }
     @PostMapping("/call")
-    public String generateOtpForCall(@Valid @RequestBody OtpDTO otpDTO){
+    public ResponseEntity<String> generateOtpForCall(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.CALL);
-        return otpService.handleOtpRequest(otpDTO,"call");
+        return ResponseEntity.ok(otpService.handleOtpRequest(otpDTO,"call"));
     }
 
     @PostMapping("/email")
-    public String generateOtpForEmail(@Valid @RequestBody OtpDTO otpDTO){
+    public ResponseEntity<String> generateOtpForEmail(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.EMAIL);
-        return otpService.handleOtpRequest(otpDTO,"email");
+        return ResponseEntity.ok(otpService.handleOtpRequest(otpDTO,"email"));
     }
 
     @PutMapping("/verify")
-    public String verifyOtp(@Valid @RequestBody OtpVerificationDTO otpVerificationDTO){
-        return otpService.verifyOtp(otpVerificationDTO);
+    public ResponseEntity<String> verifyOtp(@Valid @RequestBody OtpVerificationDTO otpVerificationDTO){
+        return ResponseEntity.ok(otpService.verifyOtp(otpVerificationDTO));
     }
     @GetMapping("/status/{clientId}")
-    public String getClientStatus(@PathVariable Long clientId){
-        return otpService.getClientStatus(clientId);
+    public ResponseEntity<String> getClientStatus(@PathVariable Long clientId){
+        return ResponseEntity.ok(otpService.getClientStatus(clientId));
     }
 }
