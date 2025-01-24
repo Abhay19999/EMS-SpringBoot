@@ -1,10 +1,10 @@
 package io.org.reactivestax.domain;
 
 
-import io.org.reactivestax.type.CustomerStatusEnum;
-import io.org.reactivestax.type.DeliveryMethodEnum;
-import io.org.reactivestax.type.OTPStatus;
-import io.org.reactivestax.type.OTPVerificationStatus;
+import io.org.reactivestax.type.enums.CustomerStatusEnum;
+import io.org.reactivestax.type.enums.DeliveryMethodEnum;
+import io.org.reactivestax.type.enums.OTPStatus;
+import io.org.reactivestax.type.enums.OTPVerificationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 

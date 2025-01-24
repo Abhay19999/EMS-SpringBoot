@@ -1,7 +1,7 @@
 package io.org.reactivestax.dto;
 
 
-import io.org.reactivestax.type.DeliveryMethodEnum;
+import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import lombok.Data;
 
 @Data

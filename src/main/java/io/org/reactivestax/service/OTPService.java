@@ -1,17 +1,15 @@
 package io.org.reactivestax.service;
 
 
-import io.org.reactivestax.domain.Client;
-import io.org.reactivestax.domain.NotificationMessage;
 import io.org.reactivestax.domain.Otp;
 import io.org.reactivestax.dto.OtpDTO;
 import io.org.reactivestax.dto.OtpVerificationDTO;
 import io.org.reactivestax.repository.ClientRepository;
 import io.org.reactivestax.repository.OTPRepository;
-import io.org.reactivestax.type.CustomerStatusEnum;
-import io.org.reactivestax.type.DeliveryMethodEnum;
-import io.org.reactivestax.type.OTPStatus;
-import io.org.reactivestax.type.OTPVerificationStatus;
+import io.org.reactivestax.type.enums.CustomerStatusEnum;
+import io.org.reactivestax.type.enums.DeliveryMethodEnum;
+import io.org.reactivestax.type.enums.OTPStatus;
+import io.org.reactivestax.type.enums.OTPVerificationStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

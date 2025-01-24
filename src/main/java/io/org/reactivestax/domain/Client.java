@@ -2,7 +2,6 @@ package io.org.reactivestax.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import io.org.reactivestax.type.CustomerStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

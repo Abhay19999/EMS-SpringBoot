@@ -1,6 +1,6 @@
 package io.org.reactivestax.dto;
 
-import io.org.reactivestax.type.CustomerStatusEnum;
+import io.org.reactivestax.type.enums.CustomerStatusEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

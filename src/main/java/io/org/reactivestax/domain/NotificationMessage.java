@@ -1,8 +1,8 @@
 package io.org.reactivestax.domain;
 
 
-import io.org.reactivestax.type.DeliveryMethodEnum;
-import io.org.reactivestax.type.MessageStatus;
+import io.org.reactivestax.type.enums.DeliveryMethodEnum;
+import io.org.reactivestax.type.enums.MessageStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
