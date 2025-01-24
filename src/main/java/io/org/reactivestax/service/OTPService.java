@@ -118,47 +118,6 @@ public class OTPService {
         otpRepository.save(otp);
     }
 
-    public String generateOtp(OtpDTO otpDTO, String contactMethod) {
-        Optional<Otp> otp = otpRepository.findFirstByClientIdOrderByCreatedAtDesc(otpDTO.getClientId());
-        Optional<Client> client = clientRepository.findById(otpDTO.getClientId());
-        if (otp.isPresent() && otp.get().getOtpStatus() != OTPStatus.EXPIRED) {
-            if (otp.get().getCreatedAt().plusMinutes(1).isAfter(LocalDateTime.now()) && otp.get().getCustomerStatusEnum() == CustomerStatusEnum.BLOCKED) {
-                return "You are blocked from generating otp";
-            }
-            otp.get().setCustomerStatusEnum(CustomerStatusEnum.BLOCKED);
-            otp.get().setOtpStatus(OTPStatus.EXPIRED);
-            otpRepository.save(otp.get());
-            if (otp.get().getCountGenerationNumber() <= 3) {
-                Otp newOtp = generateNewOtp(otpDTO, contactMethod);
-                newOtp.setOtpNumber(createRandomOneTimePassword());
-                newOtp.setVerificationCount(0);
-                newOtp.setCountGenerationNumber(otp.get().getCountGenerationNumber() + 1);
-                newOtp.setCreatedAt(LocalDateTime.now());
-                newOtp.setCustomerStatusEnum(CustomerStatusEnum.UNBLOCKED);
-                otpRepository.save(newOtp);
-                return "OTP have been updated";
-            } else {
-                otp.get().setCustomerStatusEnum(CustomerStatusEnum.BLOCKED);
-                otp.get().setBlockedTimeFrame(LocalDateTime.now());
-                otp.get().setOtpVerificationStatus(OTPVerificationStatus.NOT_VERIFIED);
-                otp.get().setOtpStatus(OTPStatus.EXPIRED);
-                otpRepository.save(otp.get());
-                return "You have been blocked for generating too man OTP";
-            }
-        } else if (otp.isEmpty() && client.isPresent()) {
-            generateNewOtp(otpDTO, contactMethod);
-            return "Otp has been generated";
-        } else if (otp.isPresent() && otp.get().getBlockedTimeFrame() == null && client.isPresent()) {
-            generateNewOtp(otpDTO, contactMethod);
-            return "Otp sent";
-        } else if (otp.isPresent() && !otp.get().getBlockedTimeFrame().plusMinutes(1).isAfter(LocalDateTime.now())) {
-            generateNewOtp(otpDTO, contactMethod);
-            return "New OTP hase been generated for you";
-        } else {
-            return "Client does not exists";
-        }
-    }
-
     private Otp generateNewOtp(OtpDTO otpDTO, String contactMethod) {
         Otp otp = new Otp();
         otp.setOtpNumber(createRandomOneTimePassword());
@@ -171,25 +130,22 @@ public class OTPService {
         otp.setCustomerStatusEnum(CustomerStatusEnum.UNBLOCKED);
         otp.setMobileNumber(otpDTO.getMobileNumber());
         otp.setEmail(otpDTO.getEmail());
+        setDeliveryMethodForOtp(otp,contactMethod);
         otpRepository.save(otp);
-        createNotificationMessage(otpDTO, contactMethod);
         jmsProducer.sendMessage(otp.getOtpId(), otpQueue);
         return otp;
     }
-
-    private void createNotificationMessage(OtpDTO otpDTO, String contactMethod) {
-        NotificationMessage notificationMessage = new NotificationMessage();
-        notificationMessage.setPhoneNumber(otpDTO.getMobileNumber());
-        notificationMessage.setEmail(otpDTO.getEmail());
-        notificationMessage.setClientId(otpDTO.getClientId());
-        if (contactMethod.equals("sms")) {
-            notificationMessage.setDeliveryMethod(DeliveryMethodEnum.SMS);
-        } else if (contactMethod.equals("call")) {
-            notificationMessage.setDeliveryMethod(DeliveryMethodEnum.CALL);
-        } else {
-            notificationMessage.setDeliveryMethod(DeliveryMethodEnum.EMAIL);
+    private void setDeliveryMethodForOtp(Otp otp,String contactMethod){
+        if (contactMethod.equals("sms")){
+            otp.setDeliveryMethod(DeliveryMethodEnum.SMS);
+        }else if(contactMethod.equals("email")){
+            otp.setDeliveryMethod(DeliveryMethodEnum.EMAIL);
+        }else {
+            otp.setDeliveryMethod(DeliveryMethodEnum.CALL);
         }
+
     }
+
 
     public String verifyOtp(OtpVerificationDTO otpVerificationDTO) {
         Optional<Otp> otp = otpRepository.findFirstByClientIdOrderByCreatedAtDesc(otpVerificationDTO.getClientId());

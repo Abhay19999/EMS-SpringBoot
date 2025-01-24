@@ -1,19 +1,14 @@
 package io.org.reactivestax.controller;
 
-import io.org.reactivestax.domain.Otp;
-import io.org.reactivestax.dto.ClientDTO;
 import io.org.reactivestax.dto.OtpDTO;
 import io.org.reactivestax.dto.OtpVerificationDTO;
 import io.org.reactivestax.service.OTPService;
 import io.org.reactivestax.type.DeliveryMethodEnum;
-import io.org.reactivestax.type.exception.ClientNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @Slf4j

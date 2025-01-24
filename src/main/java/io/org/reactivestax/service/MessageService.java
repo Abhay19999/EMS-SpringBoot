@@ -5,7 +5,7 @@ import io.org.reactivestax.domain.NotificationMessage;
 import io.org.reactivestax.dto.MessageDTO;
 import io.org.reactivestax.repository.ClientRepository;
 import io.org.reactivestax.repository.ContactRepository;
-import io.org.reactivestax.repository.MessageRepository;
+import io.org.reactivestax.repository.NotificationMessageRepository;
 import io.org.reactivestax.type.DeliveryMethodEnum;
 import io.org.reactivestax.type.MessageStatus;
 import jakarta.transaction.Transactional;
@@ -24,7 +24,7 @@ public class MessageService {
     private String jmsQueue;
 
     @Autowired
-    private MessageRepository messageRepository;
+    private NotificationMessageRepository notificationMessageRepository;
 
     @Autowired
     private ContactRepository contactRepository;
@@ -43,7 +43,7 @@ public class MessageService {
             }else{
                 notificationMessage.setDeliveryMethod(DeliveryMethodEnum.CALL);
             }
-            NotificationMessage message = messageRepository.save(notificationMessage);
+            NotificationMessage message = notificationMessageRepository.save(notificationMessage);
             jmsProducer.sendMessage(message.getMessageId(),jmsQueue);
             return convertToDTO(message);
         }else{
