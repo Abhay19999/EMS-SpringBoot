@@ -1,5 +1,6 @@
 package io.org.reactivestax.dto;
 
+import io.org.reactivestax.type.CustomerStatusEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -19,4 +20,6 @@ public class ClientDTO {
 
     @NotNull(message = "Please provide at least one contact method")
     private List<ContactDTO> contactDTOS = new ArrayList<>();
+
+    private CustomerStatusEnum customerStatus;
 }

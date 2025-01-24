@@ -1,13 +1,19 @@
 package io.org.reactivestax.controller;
 
+import io.org.reactivestax.domain.Otp;
+import io.org.reactivestax.dto.ClientDTO;
 import io.org.reactivestax.dto.OtpDTO;
 import io.org.reactivestax.dto.OtpVerificationDTO;
 import io.org.reactivestax.service.OTPService;
 import io.org.reactivestax.type.DeliveryMethodEnum;
+import io.org.reactivestax.type.exception.ClientNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -21,12 +27,26 @@ public class OTPController {
     @PostMapping("/sms")
     public String generateOtpForSms(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.SMS);
-        return  otpService.generateOtp(otpDTO,"sms");
+        return  otpService.handleOtpRequest(otpDTO,"sms");
+    }
+    @PostMapping("/call")
+    public String generateOtpForCall(@Valid @RequestBody OtpDTO otpDTO){
+        otpDTO.setContactMethod(DeliveryMethodEnum.CALL);
+        return otpService.handleOtpRequest(otpDTO,"call");
+    }
+
+    @PostMapping("/email")
+    public String generateOtpForEmail(@Valid @RequestBody OtpDTO otpDTO){
+        otpDTO.setContactMethod(DeliveryMethodEnum.EMAIL);
+        return otpService.handleOtpRequest(otpDTO,"email");
     }
 
     @PutMapping("/verify")
     public String verifyOtp(@Valid @RequestBody OtpVerificationDTO otpVerificationDTO){
         return otpService.verifyOtp(otpVerificationDTO);
-
+    }
+    @GetMapping("/status/{clientId}")
+    public String getClientStatus(@PathVariable Long clientId){
+        return otpService.getClientStatus(clientId);
     }
 }

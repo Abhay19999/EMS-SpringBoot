@@ -1,7 +1,7 @@
 package io.org.reactivestax.domain;
 
 
-import io.org.reactivestax.type.CustomerStatus;
+import io.org.reactivestax.type.CustomerStatusEnum;
 import io.org.reactivestax.type.DeliveryMethodEnum;
 import io.org.reactivestax.type.OTPStatus;
 import io.org.reactivestax.type.OTPVerificationStatus;
@@ -40,7 +40,7 @@ public class Otp {
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    private CustomerStatus customerStatus;
+    private CustomerStatusEnum customerStatusEnum;
 
     private LocalDateTime blockedTimeFrame;
     private String mobileNumber;

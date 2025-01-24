@@ -27,7 +27,6 @@ public class ClientService {
 
     private Client convertToEntity(ClientDTO clientDTO) {
         Client client = new Client();
-
         client.setFirstName(clientDTO.getFirstName());
         client.setLastName(clientDTO.getLastName());
         client.setCreatedAt(LocalDateTime.now());

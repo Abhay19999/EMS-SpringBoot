@@ -21,8 +21,7 @@ public class ClientController {
 
     @PostMapping("/save")
     public String saveClientToDatabase(@Valid @RequestBody ClientDTO clientDTO){
-        clientService.save(clientDTO);
-        return "Client saved successfully";
+        return clientService.save(clientDTO);
     }
 
 }

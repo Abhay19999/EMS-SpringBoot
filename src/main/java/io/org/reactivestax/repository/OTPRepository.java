@@ -3,8 +3,9 @@ package io.org.reactivestax.repository;
 import io.org.reactivestax.domain.Otp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface OTPRepository extends JpaRepository<Otp,Long> {
-    Otp findFirstByClientIdOrderByCreatedAtDesc(Long clientId);
-    Otp findByOtpNumberAndClientId(Long otpNumber,Long clientId);
-    Otp findByClientId(Long clientId);
+    Optional<Otp> findFirstByClientIdOrderByCreatedAtDesc(Long clientId);
+
 }

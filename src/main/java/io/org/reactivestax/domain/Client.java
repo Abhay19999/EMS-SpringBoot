@@ -2,8 +2,8 @@ package io.org.reactivestax.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.org.reactivestax.type.CustomerStatusEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -21,7 +21,6 @@ public class Client {
 
     private String firstName;
     private String lastName;
-
 
 
     @CreationTimestamp
