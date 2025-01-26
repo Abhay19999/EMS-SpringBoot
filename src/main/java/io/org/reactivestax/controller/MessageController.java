@@ -19,6 +19,7 @@ public class MessageController {
     public static final String SMS = "sms";
     public static final String CALL = "call";
     public static final String EMAIL = "email";
+
     @Autowired
     private MessageService messageService;
 
@@ -27,12 +28,12 @@ public class MessageController {
         return ResponseEntity.ok(messageService.sendMessageToJMS(messageDTO, SMS));
     }
     @PostMapping("/call")
-    public MessageDTO sendToJMSWithCallMethod(@Valid @RequestBody MessageDTO messageDTO){
-        return messageService.sendMessageToJMS(messageDTO, CALL);
+    public ResponseEntity<MessageDTO> sendToJMSWithCallMethod(@Valid @RequestBody MessageDTO messageDTO){
+        return ResponseEntity.ok(messageService.sendMessageToJMS(messageDTO, CALL));
     }
     @PostMapping("/email")
-    public MessageDTO sendToJMSWithEmailMethod(@Valid @RequestBody MessageDTO messageDTO){
-        return messageService.sendMessageToJMS(messageDTO, EMAIL);
+    public ResponseEntity<MessageDTO> sendToJMSWithEmailMethod(@Valid @RequestBody MessageDTO messageDTO){
+        return ResponseEntity.ok(messageService.sendMessageToJMS(messageDTO, EMAIL));
     }
 
 

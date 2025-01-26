@@ -10,6 +10,9 @@ import io.org.reactivestax.type.enums.CustomerStatusEnum;
 import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import io.org.reactivestax.type.enums.OTPStatus;
 import io.org.reactivestax.type.enums.OTPVerificationStatus;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,7 @@ import java.util.Random;
 @Service
 public class OTPService {
 
+    private static final Log log = LogFactory.getLog(OTPService.class);
     @Value("${jms.otp.queue}")
     private String otpQueue;
 
@@ -33,7 +37,8 @@ public class OTPService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public Long createRandomOneTimePassword() {
+    private Long createRandomOneTimePassword() {
+        log.info("Generating OTP");
         Random random = new Random();
         StringBuilder oneTimePassword = new StringBuilder();
         int length = 6;

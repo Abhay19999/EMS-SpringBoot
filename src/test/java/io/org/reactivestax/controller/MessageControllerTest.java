@@ -15,19 +15,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 import static org.mockito.Mockito.when;
 
 
-@WebMvcTest(OTPController.class)
+@WebMvcTest(MessageController.class)
 class MessageControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockitoBean
-    MessageService messageService;
+    private MessageService messageService;
 
 
     private MessageDTO messageDTO;
@@ -46,13 +45,37 @@ class MessageControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String messageJson = objectMapper.writeValueAsString(messageDTO);
         when(messageService.sendMessageToJMS(messageDTO,"sms")).thenReturn(messageDTO);
-        mockMvc.perform(post("/api/v1/ems")
+        mockMvc.perform(post("/api/v1/ems/sms")
                 .content(messageJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(messageJson));
 
+    }
+    @Test
+    void testSendToJMSWithCallMethod() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String messageJson = objectMapper.writeValueAsString(messageDTO);
+        when(messageService.sendMessageToJMS(messageDTO,"call")).thenReturn(messageDTO);
+        mockMvc.perform(post("/api/v1/ems/call")
+                        .content(messageJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(messageJson));
+    }
+    @Test
+    void testSendToJMSWithEmailMethod() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String messageJson = objectMapper.writeValueAsString(messageDTO);
+        when(messageService.sendMessageToJMS(messageDTO,"email")).thenReturn(messageDTO);
+        mockMvc.perform(post("/api/v1/ems/email")
+                        .content(messageJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(messageJson));
     }
 
 
