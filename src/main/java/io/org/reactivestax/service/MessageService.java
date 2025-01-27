@@ -8,6 +8,7 @@ import io.org.reactivestax.repository.ContactRepository;
 import io.org.reactivestax.repository.NotificationMessageRepository;
 import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import io.org.reactivestax.type.enums.MessageStatus;
+import io.org.reactivestax.type.exception.ClientNotRegisteredException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +48,7 @@ public class MessageService {
             jmsProducer.sendMessage(message.getMessageId(),jmsQueue);
             return convertToDTO(message);
         }else{
-           throw new RuntimeException();
+           throw new ClientNotRegisteredException("Client is not registered");
         }
     }
 
