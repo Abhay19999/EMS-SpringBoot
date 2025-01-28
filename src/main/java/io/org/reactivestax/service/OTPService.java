@@ -50,9 +50,9 @@ public class OTPService {
     }
 
     public String handleOtpRequest(OtpDTO otpDTO, String contactMethod){
-        return otpRepository.findFirstByClientIdOrderByCreatedAtDesc(otpDTO.getClientId())
-                .map(existingOtp -> processExistingOtp(existingOtp ,otpDTO,contactMethod))
-                .orElseGet(()-> handleNewClientOtp(otpDTO,contactMethod));
+            return otpRepository.findFirstByClientIdOrderByCreatedAtDesc(otpDTO.getClientId())
+                    .map(existingOtp -> processExistingOtp(existingOtp, otpDTO, contactMethod))
+                    .orElseGet(() -> handleNewClientOtp(otpDTO, contactMethod));
     }
 
     private String handleNewClientOtp(OtpDTO otpDTO, String contactMethod) {

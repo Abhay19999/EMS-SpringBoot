@@ -7,24 +7,34 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class IntegrationWithRestAssuredTest {
 
-    private static final String BASE_URL = "http://localhost:8080/api/v1/otp";
+
+    @LocalServerPort
+    private  int port;
+
+    private  String baseUrl;
 
     @BeforeAll
-    public static void setup() {
+    public void setup() {
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 8080;
+        RestAssured.port = port;
+       baseUrl = "http://localhost:"+port+"/api/v1/otp";
+
         try {
             given()
                     .baseUri("http://localhost")
-                    .port(8080)
+                    .port(port)
                     .when()
                     .get("/api/v1/otp/status/1")
                     .then()
@@ -37,62 +47,19 @@ class IntegrationWithRestAssuredTest {
 
     @Test
     void testSmsEndpointWithRestAssured() {
-        OtpDTO otpDTO = new OtpDTO();
-        otpDTO.setClientId(100L);
-        otpDTO.setEmail("abhaynimavat2410@gmail.com");
-        otpDTO.setMobileNumber("6478181379");
-        Response response = given()
-                .log().all()
-                .contentType("application/json")
-                .body(otpDTO)
-                .when()
-                .post(BASE_URL + "/sms")
-                .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .response();
+        Response response = getResponse("sms");
         String apiResponse = response.asString();
         assertThat(apiResponse).isNotNull();
     }
-
     @Test
     void testEmailEndPointWithRestAssured() {
-        OtpDTO otpDTO = new OtpDTO();
-        otpDTO.setClientId(100L);
-        otpDTO.setEmail("abhaynimavat2410@gmail.com");
-        otpDTO.setMobileNumber("6478181379");
-        Response response = given()
-                .log().all()
-                .contentType("application/json")
-                .body(otpDTO)
-                .when()
-                .post(BASE_URL + "/email")
-                .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .response();
+        Response response = getResponse("email");
         String apiResponse = response.asString();
         assertThat(apiResponse).isNotNull();
     }
     @Test
     void testCallEndPointWithRestAssured() {
-        OtpDTO otpDTO = new OtpDTO();
-        otpDTO.setClientId(100L);
-        otpDTO.setEmail("abhaynimavat2410@gmail.com");
-        otpDTO.setMobileNumber("6478181379");
-        Response response = given()
-                .log().all()
-                .contentType("application/json")
-                .body(otpDTO)
-                .when()
-                .post(BASE_URL + "/call")
-                .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .response();
+        Response response = getResponse("call");
         String apiResponse = response.asString();
         assertThat(apiResponse).isNotNull();
     }
@@ -107,7 +74,7 @@ class IntegrationWithRestAssuredTest {
                 .contentType("application/json")
                 .body(otpVerificationDTO)
                 .when()
-                .put(BASE_URL + "/verify")
+                .put(baseUrl + "/verify")
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -115,6 +82,23 @@ class IntegrationWithRestAssuredTest {
                 .response();
         String apiResponse = response.asString();
         assertThat(apiResponse).isNotNull();
+        assertEquals("Client does not exists", apiResponse);
     }
-
+    private Response getResponse(String contactMethod) {
+        OtpDTO otpDTO = new OtpDTO();
+        otpDTO.setClientId(100L);
+        otpDTO.setEmail("abhaynimavat2410@gmail.com");
+        otpDTO.setMobileNumber("6478181379");
+        return given()
+                .log().all()
+                .contentType("application/json")
+                .body(otpDTO)
+                .when()
+                .post(baseUrl + "/"+contactMethod)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .response();
+    }
 }

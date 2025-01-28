@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.org.reactivestax</groupId>
-	<artifactId>EMS-SpringBoot</artifactId>
+	<artifactId>ems-springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>EMS-SpringBoot</name>
+	<name>ems-springboot</name>
 	<description>EMS Spring Boot Application</description>
 	<url/>
 	<licenses>
