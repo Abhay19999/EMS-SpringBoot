@@ -2,6 +2,8 @@ package io.org.reactivestax.controller;
 
 import io.org.reactivestax.dto.OtpDTO;
 import io.org.reactivestax.dto.OtpVerificationDTO;
+import io.org.reactivestax.dto.UserLoginDTO;
+import io.org.reactivestax.service.OTPLoginService;
 import io.org.reactivestax.service.OTPService;
 import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import jakarta.validation.Valid;
@@ -20,16 +22,19 @@ public class OTPController {
     @Autowired
     private OTPService otpService;
 
+    @Autowired
+    private OTPLoginService otpLoginService;
+
 
     @PostMapping("/sms")
     public ResponseEntity<String> generateOtpForSms(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.SMS);
         return ResponseEntity.ok(otpService.handleOtpRequest(otpDTO, "sms"));
     }
-//    @PostMapping("/login/sms")
-//    public ResponseEntity<String> generateOtpForLoginSms(@Valid @RequestBody UserLoginDTO userLoginDTO){
-//        return ResponseEntity.ok(otpService.handleOtpRequestForLogin(userLoginDTO, "sms"));
-//    }
+    @PostMapping("/login/sms")
+    public ResponseEntity<String> generateOtpForLoginSms(@Valid @RequestBody UserLoginDTO userLoginDTO){
+        return ResponseEntity.ok(otpLoginService.handleOtpRequestForLogin(userLoginDTO, "sms"));
+    }
     @PostMapping("/call")
     public ResponseEntity<String> generateOtpForCall(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.CALL);
