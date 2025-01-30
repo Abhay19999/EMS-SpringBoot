@@ -10,7 +10,6 @@ import io.org.reactivestax.type.enums.CustomerStatusEnum;
 import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import io.org.reactivestax.type.enums.OTPStatus;
 import io.org.reactivestax.type.enums.OTPVerificationStatus;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +84,6 @@ public class OTPService {
                 existingOtp.getCustomerStatusEnum() == CustomerStatusEnum.BLOCKED) {
             return "You are blocked from generating otp";
         }
-
         blockAndExpireOtp(existingOtp);
 
         if (existingOtp.getCountGenerationNumber() <= 3) {
@@ -193,5 +191,9 @@ public class OTPService {
         }
 
     }
+
+//    public String handleOtpRequestForLogin(UserLoginDTO userLoginDTO, String contactMethod) {
+//    }
 }
 
+//asd

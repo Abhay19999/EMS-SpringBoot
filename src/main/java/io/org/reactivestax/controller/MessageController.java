@@ -2,6 +2,7 @@ package io.org.reactivestax.controller;
 
 
 import io.org.reactivestax.dto.MessageDTO;
+import io.org.reactivestax.dto.UserLoginDTO;
 import io.org.reactivestax.service.MessageService;
 import jakarta.validation.Valid;
 
@@ -26,6 +27,10 @@ public class MessageController {
     @PostMapping("/sms")
     public ResponseEntity<MessageDTO> sendToJMSWithSMSMethod(@Valid @RequestBody MessageDTO messageDTO){
         return ResponseEntity.ok(messageService.sendMessageToJMS(messageDTO, SMS));
+    }
+    @PostMapping("/activation/sms")
+    public ResponseEntity<UserLoginDTO> sendActivationToJMSWithSMSMethod(@RequestBody UserLoginDTO userLoginDTO){
+        return ResponseEntity.ok(messageService.sendTokenToJMS(userLoginDTO, SMS));
     }
     @PostMapping("/call")
     public ResponseEntity<MessageDTO> sendToJMSWithCallMethod(@Valid @RequestBody MessageDTO messageDTO){

@@ -3,6 +3,7 @@ package io.org.reactivestax.service;
 
 import io.org.reactivestax.domain.NotificationMessage;
 import io.org.reactivestax.dto.MessageDTO;
+import io.org.reactivestax.dto.UserLoginDTO;
 import io.org.reactivestax.repository.ClientRepository;
 import io.org.reactivestax.repository.ContactRepository;
 import io.org.reactivestax.repository.NotificationMessageRepository;
@@ -10,6 +11,7 @@ import io.org.reactivestax.type.enums.DeliveryMethodEnum;
 import io.org.reactivestax.type.enums.MessageStatus;
 import io.org.reactivestax.type.exception.ClientNotRegisteredException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,7 @@ public class MessageService {
            throw new ClientNotRegisteredException("Client is not registered");
         }
     }
+//    public String sendMessageForExternalAPI()
 
     private MessageDTO convertToDTO(NotificationMessage notificationMessage) {
         MessageDTO messageDTO = new MessageDTO();
@@ -70,5 +73,15 @@ public class MessageService {
         notificationMessage.setEmail(messageDTO.getRecipientEmailAddress());
         notificationMessage.setMessageStatus(MessageStatus.NOT_PROCESSED);
         return notificationMessage;
+    }
+
+    public UserLoginDTO sendTokenToJMS(UserLoginDTO userLoginDTO, String sms) {
+        NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessage.setRawMessage(userLoginDTO.getMessage());
+        notificationMessage.setDeliveryMethod(DeliveryMethodEnum.SMS);
+        notificationMessage.setPhoneNumber(userLoginDTO.getPhoneNumber());
+       notificationMessageRepository.save(notificationMessage);
+        jmsProducer.sendMessage(notificationMessage.getMessageId(),jmsQueue);
+        return null;
     }
 }

@@ -26,6 +26,10 @@ public class OTPController {
         otpDTO.setContactMethod(DeliveryMethodEnum.SMS);
         return ResponseEntity.ok(otpService.handleOtpRequest(otpDTO, "sms"));
     }
+//    @PostMapping("/login/sms")
+//    public ResponseEntity<String> generateOtpForLoginSms(@Valid @RequestBody UserLoginDTO userLoginDTO){
+//        return ResponseEntity.ok(otpService.handleOtpRequestForLogin(userLoginDTO, "sms"));
+//    }
     @PostMapping("/call")
     public ResponseEntity<String> generateOtpForCall(@Valid @RequestBody OtpDTO otpDTO){
         otpDTO.setContactMethod(DeliveryMethodEnum.CALL);
