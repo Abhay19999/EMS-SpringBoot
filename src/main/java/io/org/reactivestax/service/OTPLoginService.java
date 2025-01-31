@@ -25,7 +25,7 @@ import java.util.Random;
 @Service
 public class OTPLoginService {
     private static final Log log = LogFactory.getLog(OTPService.class);
-    @Value("${jms.otp.queue}")
+    @Value("${jms.login.queue}")
     private String otpQueue;
 
     @Autowired
@@ -102,7 +102,7 @@ public class OTPLoginService {
         newOtp.setCustomerStatusEnum(CustomerStatusEnum.UNBLOCKED);
         otpLoginRepository.save(newOtp);
     }
-    private String handleNewClientOtp(UserLoginDTO otpDTO, String contactMethod) {
+    private String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   handleNewClientOtp(UserLoginDTO otpDTO, String contactMethod) {
         generateNewOtp(otpDTO, contactMethod);
         return "Otp has been generated";
     }
