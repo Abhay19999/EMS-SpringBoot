@@ -48,7 +48,7 @@ public class OTPLoginService {
 
 
     public String handleOtpRequestForLogin(UserLoginDTO userLoginDTO, String contactMethod) {
-        return otpLoginRepository.findByUserId(userLoginDTO.getUserId())
+        return otpLoginRepository.findFirstByUserIdOrderByCreatedAtDesc(userLoginDTO.getUserId())
                 .map(existingOtp -> processExistingOtp(existingOtp, userLoginDTO, contactMethod))
                 .orElseGet(() -> handleNewClientOtp(userLoginDTO, contactMethod));
     }

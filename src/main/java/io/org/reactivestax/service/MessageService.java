@@ -37,7 +37,7 @@ public class MessageService {
 
     @Transactional
     public MessageDTO sendMessageToJMS(MessageDTO messageDTO,String contactMethod){
-        if(clientRepository.existsById(messageDTO.getClientId())) {
+//        if(clientRepository.existsById(messageDTO.getClientId())) {
             NotificationMessage notificationMessage = convertToEntity(messageDTO);
             if(contactMethod.equals("sms")) {
                 notificationMessage.setDeliveryMethod(DeliveryMethodEnum.SMS);
@@ -49,9 +49,9 @@ public class MessageService {
             NotificationMessage message = notificationMessageRepository.save(notificationMessage);
             jmsProducer.sendMessage(message.getMessageId(),jmsQueue);
             return convertToDTO(message);
-        }else{
-           throw new ClientNotRegisteredException("Client is not registered");
-        }
+//        }else{
+//           throw new ClientNotRegisteredException("Client is not registered");
+//        }
     }
 //    public String sendMessageForExternalAPI()
 

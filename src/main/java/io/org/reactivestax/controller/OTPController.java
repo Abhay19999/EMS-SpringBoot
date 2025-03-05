@@ -2,6 +2,7 @@ package io.org.reactivestax.controller;
 
 import io.org.reactivestax.dto.OtpDTO;
 import io.org.reactivestax.dto.OtpVerificationDTO;
+import io.org.reactivestax.dto.OtpVerificationForLoginDTO;
 import io.org.reactivestax.dto.UserLoginDTO;
 import io.org.reactivestax.service.OTPLoginService;
 import io.org.reactivestax.service.OTPService;
@@ -50,6 +51,11 @@ public class OTPController {
     @PutMapping("/verify")
     public ResponseEntity<String> verifyOtp(@Valid @RequestBody OtpVerificationDTO otpVerificationDTO){
         return ResponseEntity.ok(otpService.verifyOtp(otpVerificationDTO));
+    }
+    @PutMapping("/login/verify")
+    public ResponseEntity<String> verifyLoginOtp(@RequestBody OtpVerificationForLoginDTO otpVerificationDTO){
+        return ResponseEntity.ok(otpLoginService.verifyOtp(otpVerificationDTO));
+
     }
     @GetMapping("/status/{clientId}")
     public ResponseEntity<String> getClientStatus(@PathVariable Long clientId){
